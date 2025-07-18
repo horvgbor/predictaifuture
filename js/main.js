@@ -49,8 +49,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 const row = {};
                 headers.forEach((header, index) => {
                     let value = values[index] ? values[index].trim() : '';
-                    if (header.toLowerCase() === 'date') {
-                        value = new Date(value); // Parse date string to Date object
+                    if (header.toLowerCase() === 'date' || header.toLowerCase() === 'when') {
+                        value = new Date(value); // Parse date and when columns to Date object
                     }
                     row[header] = value;
                 });
@@ -119,6 +119,9 @@ document.addEventListener('DOMContentLoaded', () => {
                         } else if (header.toLowerCase() === 'date') {
                             cellData = rowData[header] ? rowData[header].toLocaleDateString() : '';
                             td.textContent = cellData;
+                        } else if (header.toLowerCase() === 'when') {
+                            cellData = rowData[header] instanceof Date && !isNaN(rowData[header]) ? rowData[header].toISOString().slice(0, 10) : '';
+                            td.textContent = cellData;
                         } else {
                             td.textContent = cellData;
                         }
@@ -169,6 +172,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     } else if (header.toLowerCase() === 'date') {
                         // Format date for display
                         cellData = rowData[header] ? rowData[header].toLocaleDateString() : '';
+                        td.textContent = cellData;
+                    } else if (header.toLowerCase() === 'when') {
+                        cellData = rowData[header] instanceof Date && !isNaN(rowData[header]) ? rowData[header].toISOString().slice(0, 10) : '';
                         td.textContent = cellData;
                     } else {
                         td.textContent = cellData;
