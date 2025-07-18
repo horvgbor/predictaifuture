@@ -69,7 +69,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Function to sort table
         function sortTable(header) {
-            const isDate = header.toLowerCase() === 'date';
+            const isDate = header.toLowerCase() === 'date' || header.toLowerCase() === 'when';
             const sortDirection = table.getAttribute('data-sort-direction') === 'asc' ? 'desc' : 'asc';
 
             rows.sort((a, b) => {
@@ -77,8 +77,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 let bValue = b[header];
 
                 if (isDate) {
-                    aValue = aValue ? aValue.getTime() : -Infinity; // Handle null dates
-                    bValue = bValue ? bValue.getTime() : -Infinity;
+                    aValue = aValue instanceof Date && !isNaN(aValue) ? aValue.getTime() : -Infinity;
+                    bValue = bValue instanceof Date && !isNaN(bValue) ? bValue.getTime() : -Infinity;
                 } else {
                     aValue = String(aValue).toUpperCase();
                     bValue = String(bValue).toUpperCase();
