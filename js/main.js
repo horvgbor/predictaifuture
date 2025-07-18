@@ -11,6 +11,16 @@ document.addEventListener('DOMContentLoaded', () => {
             const csvData = await response.text();
             const parsedData = parseCSV(csvData);
 
+            // Default sort by "when" column if present
+            const whenHeader = parsedData.headers.find(h => h.toLowerCase() === 'when');
+            if (whenHeader) {
+                parsedData.rows.sort((a, b) => {
+                    const aValue = a[whenHeader] instanceof Date ? a[whenHeader].getTime() : 0;
+                    const bValue = b[whenHeader] instanceof Date ? b[whenHeader].getTime() : 0;
+                    return aValue - bValue;
+                });
+            }
+
             if (parsedData.headers.length > 0 && parsedData.rows.length > 0) {
                 renderTable(parsedData.headers, parsedData.rows);
             } else {
